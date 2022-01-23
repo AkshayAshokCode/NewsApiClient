@@ -1,9 +1,11 @@
 package com.akshayashokcode.newsapiclient.presentation.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,14 +16,25 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class NewsViewModel(
-    val getNewsHeadLinesUseCase:GetNewsHeadlinesUseCase
-):ViewModel() {
+    private val app:Application,
+    private val getNewsHeadLinesUseCase:GetNewsHeadlinesUseCase
+): AndroidViewModel(app) {
     val newsHeadLines:MutableLiveData<Resource<APIResponse>> = MutableLiveData()
 
     fun getNewsHeadLines(country:String,page:Int)=viewModelScope.launch(IO){
         newsHeadLines.postValue(Resource.Loading())
-        val apiResult=getNewsHeadLinesUseCase.execute(country, page)
-        newsHeadLines.postValue(apiResult)
+        try {
+
+
+        if(isNetworkAvailable(app)) {
+            val apiResult = getNewsHeadLinesUseCase.execute(country, page)
+            newsHeadLines.postValue(apiResult)
+        }else{
+            newsHeadLines.postValue(Resource.Error("Internet is not available"))
+        }
+        }catch (e:Exception){
+            newsHeadLines.postValue(Resource.Error(e.message.toString()))
+        }
     }
 
     private fun  isNetworkAvailable(context:Context?):Boolean{
