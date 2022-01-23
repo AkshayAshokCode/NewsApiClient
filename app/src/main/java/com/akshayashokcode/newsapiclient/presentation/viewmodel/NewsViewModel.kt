@@ -24,7 +24,7 @@ class NewsViewModel(
         newsHeadLines.postValue(apiResult)
     }
 
- /*   private fun  isNetworkAvailable(context:Context?):Boolean{
+    private fun  isNetworkAvailable(context:Context?):Boolean{
         if(context==null) return false
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -43,7 +43,14 @@ class NewsViewModel(
                     }
                 }
             }
+        } else {
+            val activeNetworkInfo = connectivityManager.activeNetworkInfo
+            if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
+                return true
+            }
         }
+        return false
+
     }
-*/
+
 }
