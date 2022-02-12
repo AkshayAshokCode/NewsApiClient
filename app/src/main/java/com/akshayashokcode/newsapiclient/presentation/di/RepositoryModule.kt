@@ -1,6 +1,7 @@
 package com.akshayashokcode.newsapiclient.presentation.di
 
 import com.akshayashokcode.newsapiclient.data.repository.NewsRepositoryImpl
+import com.akshayashokcode.newsapiclient.data.repository.dataSource.NewsLocalDataSource
 import com.akshayashokcode.newsapiclient.data.repository.dataSource.NewsRemoteDataSource
 import com.akshayashokcode.newsapiclient.domain.repository.NewsRepository
 import dagger.Module
@@ -17,8 +18,9 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideNewsRepository(
-        newsRemoteDataSource: NewsRemoteDataSource
+        newsRemoteDataSource: NewsRemoteDataSource,
+        newsLocalDataSource: NewsLocalDataSource
     ):NewsRepository{
-        return NewsRepositoryImpl(newsRemoteDataSource)
+        return NewsRepositoryImpl(newsRemoteDataSource,newsLocalDataSource)
     }
 }

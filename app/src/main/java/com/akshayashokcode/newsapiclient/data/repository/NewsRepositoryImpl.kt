@@ -2,13 +2,17 @@ package com.akshayashokcode.newsapiclient.data.repository
 
 import com.akshayashokcode.newsapiclient.data.model.APIResponse
 import com.akshayashokcode.newsapiclient.data.model.Article
+import com.akshayashokcode.newsapiclient.data.repository.dataSource.NewsLocalDataSource
 import com.akshayashokcode.newsapiclient.data.repository.dataSource.NewsRemoteDataSource
 import com.akshayashokcode.newsapiclient.data.util.Resource
 import com.akshayashokcode.newsapiclient.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-class NewsRepositoryImpl(private val newsRemoteDataSource: NewsRemoteDataSource):NewsRepository {
+class NewsRepositoryImpl(
+    private val newsRemoteDataSource: NewsRemoteDataSource,
+    private val newsLocalDataSource: NewsLocalDataSource
+    ):NewsRepository {
     override suspend fun getNewHeadlines( country: String, page: Int): Resource<APIResponse> {
         return responseToResource(newsRemoteDataSource.getTopHeadlines(country, page))
     }
@@ -33,7 +37,7 @@ class NewsRepositoryImpl(private val newsRemoteDataSource: NewsRemoteDataSource)
     }
 
     override suspend fun saveNews(article: Article) {
-        TODO("Not yet implemented")
+       newsLocalDataSource.saveArticleToDB(article)
     }
 
     override suspend fun deleteNews(article: Article) {
