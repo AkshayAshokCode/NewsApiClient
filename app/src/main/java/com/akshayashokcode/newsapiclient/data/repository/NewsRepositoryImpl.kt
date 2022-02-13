@@ -1,5 +1,6 @@
 package com.akshayashokcode.newsapiclient.data.repository
 
+import com.akshayashokcode.newsapiclient.data.db.ArticleDao
 import com.akshayashokcode.newsapiclient.data.model.APIResponse
 import com.akshayashokcode.newsapiclient.data.model.Article
 import com.akshayashokcode.newsapiclient.data.repository.dataSource.NewsLocalDataSource
@@ -45,6 +46,6 @@ class NewsRepositoryImpl(
     }
 
     override fun getSavedNews(): Flow<List<Article>> {
-        TODO("Not yet implemented")
+        return newsLocalDataSource.getSavedArticles()
     }
 }
