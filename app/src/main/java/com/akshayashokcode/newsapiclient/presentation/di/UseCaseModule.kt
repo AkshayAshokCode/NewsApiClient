@@ -2,6 +2,7 @@ package com.akshayashokcode.newsapiclient.presentation.di
 
 import com.akshayashokcode.newsapiclient.domain.repository.NewsRepository
 import com.akshayashokcode.newsapiclient.domain.usecase.GetNewsHeadlinesUseCase
+import com.akshayashokcode.newsapiclient.domain.usecase.GetSavedNewsUseCase
 import com.akshayashokcode.newsapiclient.domain.usecase.GetSearchedNewsUseCase
 import com.akshayashokcode.newsapiclient.domain.usecase.SaveNewsUseCase
 import dagger.Module
@@ -36,5 +37,13 @@ class UseCaseModule {
         newsRepository: NewsRepository
     ):SaveNewsUseCase{
         return SaveNewsUseCase(newsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSavedNewsUseCase(
+        newsRepository: NewsRepository
+    ):GetSavedNewsUseCase{
+        return GetSavedNewsUseCase(newsRepository)
     }
 }
